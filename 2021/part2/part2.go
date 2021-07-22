@@ -112,48 +112,67 @@ func (mi *MyInput) readWords() []string {
 ////////////////////////////////////////////////////////////////////////////////
 
 func main() {
-	// f, _ := os.Open("./input.txt")
+	// f, _ := os.Open("input.txt")
 	// mi := MyInput{rdr: f}
 	mi := MyInput{rdr: os.Stdin}
 
 	t := mi.readInt()
 	for caseNo := 1; caseNo <= t; caseNo++ {
-		printOutput(t, getOccurrence(mi.readLine()))
-
+		_ = mi.readLine()
+		res := getLetters(mi.readInts())
+		printOutput(caseNo, res)
 	}
 }
 
-// getOccurrence returns the number of times the the pattern IO appears
-func getOccurrence(in string) int {
-	var cI, ci int
-	var cOcc int
-	events := strings.Split(in, "")
-	for _, char := range events {
-		switch char {
-		case "I":
-			cI++
-		case "i":
-			ci++
-		case "O":
-			if cI > 0 {
-				cI--
-				cOcc++
-			} else {
-				ci--
-			}
-		case "o":
-			if ci > 0 {
-				ci--
-			} else {
-				cI--
-			}
+const (
+	Achar byte = 'A'
+)
+
+func getLetters(input []int) string {
+	var letters = "A"
+
+	j := 0
+	for j+1 < len(input) {
+		nbOdd := input[j]
+		nbEven := input[j+1]
+		if nbOdd < nbEven {
+			letters += climb(nbOdd-1) + unclimb(nbEven+1)
+		} else {
+			letters += climb(nbOdd) + unclimb(nbEven)
 		}
+		j += 2
 	}
-	return cOcc
+
+	if len(input)%2 == 1 {
+	letters += climb(input[j])
+	}
+
+	return letters
+}
+
+func climb(nbL int) string {
+	letter := Achar + 1
+	letters := make([]byte, 0)
+	for i := 0; i < nbL; i++ {
+		letters = append(letters, letter)
+		letter = letter + 1
+	}
+	return string(letters[:])
+}
+
+func unclimb(nbL int) string {
+	letter := Achar + byte(nbL)
+	letters := make([]byte, 0)
+	for i := 0; i < nbL; i++ {
+		letter = letter - 1
+		letters = append(letters, letter)
+	}
+
+	return string(letters[:])
 }
 
 // printOutput prints the output in the requested format
 // e.g.: "Case #1: 2"
-func printOutput(caseNb, out int) {
-	fmt.Printf("Case #%d: %d", caseNb, out)
+func printOutput(caseNb int, out string) {
+	fmt.Printf("Case #%d: %s\n", caseNb, out)
 }

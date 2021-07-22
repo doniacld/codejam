@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -118,38 +119,26 @@ func main() {
 
 	t := mi.readInt()
 	for caseNo := 1; caseNo <= t; caseNo++ {
-		printOutput(t, getOccurrence(mi.readLine()))
-
+		_ = mi.readLine()
+		res := mi.readInts()
+		printOutput(caseNo, getMin(res))
 	}
 }
 
-// getOccurrence returns the number of times the the pattern IO appears
-func getOccurrence(in string) int {
-	var cI, ci int
-	var cOcc int
-	events := strings.Split(in, "")
-	for _, char := range events {
-		switch char {
-		case "I":
-			cI++
-		case "i":
-			ci++
-		case "O":
-			if cI > 0 {
-				cI--
-				cOcc++
-			} else {
-				ci--
-			}
-		case "o":
-			if ci > 0 {
-				ci--
-			} else {
-				cI--
-			}
+func getMin(sizes []int) int {
+	sort.Ints(sizes)
+
+	treats := 1
+	sum := 0
+	prec := sizes[0]
+	for _, size := range sizes {
+		if size != prec {
+			treats++
+			prec = size
 		}
+		sum += treats
 	}
-	return cOcc
+	return sum
 }
 
 // printOutput prints the output in the requested format

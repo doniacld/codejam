@@ -4,7 +4,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"os"
 	"strconv"
@@ -112,48 +111,12 @@ func (mi *MyInput) readWords() []string {
 ////////////////////////////////////////////////////////////////////////////////
 
 func main() {
-	// f, _ := os.Open("./input.txt")
-	// mi := MyInput{rdr: f}
-	mi := MyInput{rdr: os.Stdin}
+	f, _ := os.Open("input_file.in")
+	mi := MyInput{rdr: f}
+	// mi := MyInput{rdr: os.Stdin}
 
 	t := mi.readInt()
 	for caseNo := 1; caseNo <= t; caseNo++ {
-		printOutput(t, getOccurrence(mi.readLine()))
-
+		// TODO - solve the case !
 	}
-}
-
-// getOccurrence returns the number of times the the pattern IO appears
-func getOccurrence(in string) int {
-	var cI, ci int
-	var cOcc int
-	events := strings.Split(in, "")
-	for _, char := range events {
-		switch char {
-		case "I":
-			cI++
-		case "i":
-			ci++
-		case "O":
-			if cI > 0 {
-				cI--
-				cOcc++
-			} else {
-				ci--
-			}
-		case "o":
-			if ci > 0 {
-				ci--
-			} else {
-				cI--
-			}
-		}
-	}
-	return cOcc
-}
-
-// printOutput prints the output in the requested format
-// e.g.: "Case #1: 2"
-func printOutput(caseNb, out int) {
-	fmt.Printf("Case #%d: %d", caseNb, out)
 }
