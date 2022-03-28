@@ -1,18 +1,18 @@
+// This CodeJam template was freely built upon this one:
 // http://weblog.shank.in/input-template-go-for-algorithmic-competitions/
 
 package main
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"os"
 	"strconv"
 	"strings"
 )
 
-////////////////////////////////////////////////////////////////////////////////
-
-// INPUT TEMPLATE START
+// //////////////////////////////////////////////////////////////////////////////
 
 type MyInput struct {
 	rdr         io.Reader
@@ -106,17 +106,26 @@ func (mi *MyInput) readWords() []string {
 	return strings.Split(line, " ")
 }
 
-// INPUT TEMPLATE END
-
-////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////
 
 func main() {
-	f, _ := os.Open("input_file.in")
-	mi := MyInput{rdr: f}
-	// mi := MyInput{rdr: os.Stdin}
+	mi := MyInput{rdr: os.Stdin}
+	run(mi, func(s string) {
+		fmt.Println(s)
+	})
+}
 
+// //////////////////////////////////////////////////////////////////////////////
+
+func run(mi MyInput, out func(string)) {
 	t := mi.readInt()
 	for caseNo := 1; caseNo <= t; caseNo++ {
-		// TODO - solve the case !
+		// TODO Add your stuff here
+		solve()
+		out(fmt.Sprintf("Case #%d: ", caseNo))
 	}
+}
+
+func solve() {
+
 }
