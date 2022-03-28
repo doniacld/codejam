@@ -1,18 +1,19 @@
+// This CodeJam template was freely built upon this one:
 // http://weblog.shank.in/input-template-go-for-algorithmic-competitions/
 
 package main
 
 import (
 	"bufio"
+	"fmt"
 	"io"
+	"math"
 	"os"
 	"strconv"
 	"strings"
 )
 
-////////////////////////////////////////////////////////////////////////////////
-
-// INPUT TEMPLATE START
+// //////////////////////////////////////////////////////////////////////////////
 
 type MyInput struct {
 	rdr         io.Reader
@@ -106,17 +107,53 @@ func (mi *MyInput) readWords() []string {
 	return strings.Split(line, " ")
 }
 
-// INPUT TEMPLATE END
-
-////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////
 
 func main() {
-	f, _ := os.Open("input_file.in")
-	mi := MyInput{rdr: f}
-	// mi := MyInput{rdr: os.Stdin}
+	mi := MyInput{rdr: os.Stdin}
+	run(mi, func(s string) {
+		fmt.Println(s)
+	})
+}
 
+// //////////////////////////////////////////////////////////////////////////////
+
+func run(mi MyInput, out func(string)) {
 	t := mi.readInt()
 	for caseNo := 1; caseNo <= t; caseNo++ {
-		// TODO - solve the case !
+		n := mi.readInt()
+		counts := make([]int, 4)
+
+		for l := 0; l < n; l++ {
+			line := mi.readLine()
+			counts[0] += countIs(line[:n])
+			counts[1] += countIs(line[n:])
+		}
+
+		for l := n; l < 2*n; l++ {
+			line := mi.readLine()
+			counts[2] += countIs(line[:n])
+			counts[3] += countIs(line[n:])
+		}
+
+		out(fmt.Sprintf("Case #%d: %d", caseNo, touch(counts)))
 	}
+}
+
+func countIs(line string) int {
+	count := 0
+	for _, l := range strings.Split(line, "") {
+		if l == "I" {
+			count++
+		}
+	}
+	return count
+}
+
+func touch(nbsIs []int) int {
+	return diff(nbsIs[0], nbsIs[3]) + diff(nbsIs[1], nbsIs[2])
+}
+
+func diff(a, b int) int {
+	return int(math.Abs(float64(a - b)))
 }
